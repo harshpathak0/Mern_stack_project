@@ -14,11 +14,23 @@ function Home() {
             .catch(err => console.log(err));
     }, []);
 
+
+    
     const handleDelete = (id) => {
-       axios.delete(`http://localhost:8081/deleteform/${id}`)
-       .then(result => navigate("/"))
-       .catch(err => console.log(err))
-    }
+        axios.delete(`http://localhost:8081/deleteform/${id}`)
+        .then(response => {
+            if (response.status === 200) {
+                navigate("/");
+            } else {
+                console.log("Delete request failed with status code: " + response.status);
+            }
+        })
+        .catch(err => {
+            
+            console.log(err);
+        });
+     }
+     
 
     return (
         <> <div className='d-column'>

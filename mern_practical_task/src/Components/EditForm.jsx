@@ -4,14 +4,6 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate, useParams } from 'react-router-dom';
 function EditForm() {
  
-    // const [data, setData] = useState({
-    //     name: '',
-    //     email: '',
-    //     number: '',
-    //     gender: '',
-    //     status: '',
-    //     location: ''
-    //   })
       const [name, setName] = useState()
       const [email, setEmail] = useState()
       const [number, setNumber] = useState()
@@ -20,22 +12,10 @@ function EditForm() {
       const [location, setLocation] = useState()
       const{id} = useParams()  
       
-
-
-    
       const navigate = useNavigate()
-    
       const handleSubmit = (e) => {
         e.preventDefault();
-        // const formData = {
-        //   name: data.name,
-        //   email: data.email,
-        //   number: data.number,
-        //   gender: data.gender,
-        //   status: data.status,
-        //   location: data.location,
-        // };
-    
+        
         axios.put(`http://localhost:8081/editform/${id}`, {name, email, number, gender, status, location})
           .then(res => {
             if(res.data === "Success"){
@@ -86,8 +66,8 @@ function EditForm() {
             <label for="inputSalary" className="form-label">Gender</label>
             <Form.Select aria-label="Default select example" onChange={e => setGender(e.target.value)}>
               <option>Select Your Gender</option>
-              <option value="1">Male</option>
-              <option value="2">Female</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </Form.Select>
           </div>
 
@@ -95,8 +75,8 @@ function EditForm() {
             <label for="inputSalary" className="form-label">Status</label>
             <Form.Select aria-label="Default select example" onChange={e => setStatus(e.target.value)}>
               <option>Select Your Status</option>
-              <option value="1">Active</option>
-              <option value="2">InActive</option>
+              <option value="Active">Active</option>
+              <option value="InActive">InActive</option>
             </Form.Select>
           </div>
 
@@ -122,4 +102,4 @@ function EditForm() {
   )
 }
 
-export default EditForm
+export default EditForm 

@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: ['http://localhost:3000'],
-    methods: ['POST', "GET"],
+    methods: ['POST', "GET", "PUT", "DELETE"],
     credentials: true
 }));
 
@@ -33,7 +33,7 @@ console.log(mongoose.connect)
 // const upload = multer ({
 //     storage: storage
 // })
-
+ 
 app.get("/getUsers", (req, res) => {
     AddModel.find()
         .then(users => res.json(users))
@@ -66,11 +66,12 @@ app.put("/editform/:id", (req, res) => {
 })
 
 
-app.delete("deleteform/:id" , (req,res) => {
+app.delete("/deleteform/:id", (req,res) => {
     AddModel.findOneAndDelete({_id: req.params.id})
     .then(result=> res.json("Success"))
     .catch(err => res.json(err))
 })
+
 
 app.post("/adddata", (req, res) => {
     const { name, email, number, gender, status, location } = req.body;
