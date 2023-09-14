@@ -3,13 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {Table , Navbar, Container, Form, Button, Pagination} from 'react-bootstrap';
 import "./style.css";
+import { CSVLink} from "react-csv";
 
 
 function Home() {
 
     const navigate = useNavigate()
     const [users, setUsers] = useState([]);
-
+    const [csv, setCsv] = useState([]);
     const [name , setName]= useState(" ");
 
     //////Pagination//////
@@ -19,7 +20,11 @@ function Home() {
     useEffect(() => {
         axios.get("http://localhost:8081/getUsers")
             // .then(users => setUsers(users.data)) 
-            .then(response => setUsers(response.data))
+            .then(response => { 
+                setUsers(response.data)
+                setCsv(response.data)
+               
+            })
             .catch(err => console.log(err));
     }, []);
 
@@ -56,7 +61,26 @@ function Home() {
     const endIndex = startIndex + itemsPerPage;
     const currentUsers = filteredUsers.slice(startIndex, endIndex);
     
-   
+
+
+    const handleExportCSV = () => {
+
+        const formattedData = currentUsers.map(user => ({
+            Name: user.name,
+            Email: user.email,
+            number: user.number,
+            Gender: user.gender,
+            Status: user.status,
+            Location: user.location
+        }));
+       
+        // Set the csvData state to the formatted data
+        setCsv(formattedData);
+    };
+        
+
+
+
     
     return (
         <>
@@ -85,7 +109,26 @@ function Home() {
             <Button variant="outline-success">Search</Button>
             </Form>
                 </div>
-                <div className='d-flex justify-content-center align-items-center p-4 '><Link to="/adddata" type="button" className="btn btn-primary " >Add user</Link></div>
+
+                <div className= 'd-flex'>
+                <div className= "p-4" >
+                <Link to="/adddata" type="button" className="btn btn-primary " >Add user</Link>
+                </div>
+
+                 <div className= "p-4">
+                 <Button onClick={handleExportCSV} variant="primary" className= "pl-5">
+                        <CSVLink
+                            data={csv}
+                            filename={"user_data.csv"}
+                            className="export-button"
+                            target="_blank"
+                            style={{textDecoration:"none", color:'white'}}>
+                            Export to CSV
+                        </CSVLink>
+                </Button>
+                </div>
+                
+                </div>
                 </div>
 
 
